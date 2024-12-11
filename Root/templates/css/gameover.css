@@ -1,0 +1,28 @@
+body {
+    background-color: #676a6c;
+    color: #FFFFFF;
+}
+
+.gameover_layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 150px 0px;
+}
+
+.tytle {
+    color:#fbfe99;
+    font-weight: bold;
+    -webkit-text-stroke: 1px #000000;
+    font-size: 100px;
+}
+
+.score_layout {
+    display: flex;
+    font-size: 50px;
+}
+
+.score {
+    padding: 0px 20px;
+    font-weight: bold;
+}

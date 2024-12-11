@@ -1,0 +1,82 @@
+
+
+body {
+    /* font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-style: normal; */
+    background-color: #676a6c;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.whole {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.score_layout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 50px 0px;
+    font-size: 40px;
+    gap: 40px;
+}
+
+.title {
+    color:#fbfe99;
+    font-weight: bold;
+    -webkit-text-stroke: 1px #000000;
+    font-size: 75px;
+}
+
+.rank_layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-right: 40px;
+    background-color: #a8aba67b;
+    border-radius: 20px;
+    padding: 30px 80px;
+}
+
+.ranking {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 25px;
+}
+
+.lv_layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.next {
+    display: flex;
+    flex-direction: row;
+    gap:25px;
+}
+
+.score {
+    padding: 0px 20px;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+.rank {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.subtitle {
+    font-size: 60px;
+    font-weight: bold;
+    color:#ffb87d;
+    -webkit-text-stroke: 1px #000000;
+
+}
