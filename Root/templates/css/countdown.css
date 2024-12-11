@@ -1,0 +1,25 @@
+body {
+    display: flex;
+    background-color: #676a6c;
+    color: #FFFFFF;
+    text-align: center;
+    -webkit-text-stroke: 1px #000000;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    color:#fbfe99;
+    font-weight: bold;
+    -webkit-text-stroke: 1px #000000;
+    font-size: 100px;
+}
+
+.css1{
+    font-size: 150px;
+    color: white;
+}
+.css2{
+    font-size: 20px;
+}
