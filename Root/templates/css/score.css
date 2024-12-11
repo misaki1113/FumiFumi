@@ -4,9 +4,14 @@ body {
     /* font-family: "Audiowide", sans-serif;
     font-weight: 400;
     font-style: normal; */
+    display: flex;
     background-color: #676a6c;
     color: #FFFFFF;
     text-align: center;
+    -webkit-text-stroke: 1px #000000;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
 }
 
 .whole {
@@ -20,16 +25,14 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 50px 0px;
+    padding-top: 50px;
     font-size: 40px;
     gap: 40px;
 }
 
 .title {
     color:#fbfe99;
-    font-weight: bold;
-    -webkit-text-stroke: 1px #000000;
-    font-size: 75px;
+    font-size: 100px;
 }
 
 .rank_layout {
@@ -75,8 +78,9 @@ body {
 
 .subtitle {
     font-size: 60px;
-    font-weight: bold;
     color:#ffb87d;
-    -webkit-text-stroke: 1px #000000;
+}
 
+.red {
+    color:#e57575;
 }

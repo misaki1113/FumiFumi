@@ -1,6 +1,12 @@
 body {
+    display: flex;
     background-color: #676a6c;
     color: #FFFFFF;
+    text-align: center;
+    -webkit-text-stroke: 1px #000000;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
 }
 
 .gameover_layout {

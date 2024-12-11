@@ -1,0 +1,5 @@
+body {
+    background-image: url('./img/home.png'); /* 背景画像のパス */
+     background-size: cover;
+    background-repeat: no-repeat;
+}
