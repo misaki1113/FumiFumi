@@ -84,15 +84,15 @@ class S11059:
             time.sleep(88 * 4 / 1000000)
             time.sleep(0.001)  # wait buffer
 
-        elif self.itime == 0x1:  # 0x1: delay 1.4msec
+        elif self.itime == 0x1:  # 0x1: delay 2msec
             time.sleep(2 * 4 / 1000)
             time.sleep(0.001)  # wait buffer
 
-        elif self.itime == 0x2:  # 0x2: delay 22.4msec
+        elif self.itime == 0x2:  # 0x2: delay 23msec
             time.sleep(23 * 4 / 1000)
             time.sleep(0.001)  # wait buffer
 
-        elif self.itime == 0x3:  # 0x3: delay 179.2msec
+        elif self.itime == 0x3:  # 0x3: delay 180msec
             time.sleep(180 * 4 / 1000)
             time.sleep(0.001)  # wait buffer
 
