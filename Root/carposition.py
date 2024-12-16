@@ -69,13 +69,11 @@ class CarPosition:
 
     def changePosition(self, step):
         if -10 < self.num_move < 10:
-            # 移動するステップ数をdistance_moveに基づき設定
-            steps_to_move = self.distance_move
             # 方向を決定
             GPIO.output(self.steppingDir_gpio, GPIO.HIGH if step > 0 else GPIO.LOW)
 
             # ステッピングモータを動かす
-            for _ in range(steps_to_move):
+            for _ in range(self.distance_move):
                 GPIO.output(self.steppingStep_gpio, GPIO.HIGH)
                 time.sleep(0.001)  # STEP信号の間隔
                 GPIO.output(self.steppingStep_gpio, GPIO.LOW)
