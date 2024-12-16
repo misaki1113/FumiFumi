@@ -3,7 +3,6 @@ import time
 
 class S11059:
 
-    # 定数と設定をclassのスコープに移動
     slave_address = 0x2A
 
     sensor_control = 0x00
@@ -22,10 +21,8 @@ class S11059:
     ctrl_gain = 0x08
     ctrl_mode = 0x04
 
-    # S11059 Measurement time select
     ctrl_time = 0x1  # 0x0:87,5μs,0x1:1.4ms,0x2:22.4ms,0x3:179.2ms
 
-    # SMBus
     bus = smbus.SMBus(1)
 
     def __init__(self):
@@ -35,7 +32,6 @@ class S11059:
         self.setMode()
         self.start()
 
-    ## Set Gain
     def setGain(self, gain):
         data = self.getConfig()
         if gain == 1:  # 1:GAIN_HIGH, 0:GAIN_LOW
@@ -44,7 +40,6 @@ class S11059:
             data &= ~(S11059.ctrl_gain)
         S11059.bus.write_byte_data(self.address, S11059.sensor_control, data)
 
-    ## Set Time
     def setTime(self, itime):
         self.itime = itime
         data = self.getConfig()
@@ -52,32 +47,27 @@ class S11059:
         data |= itime  # 測定時間を設定
         S11059.bus.write_byte_data(self.address, S11059.sensor_control, data)
 
-    ## Set Mode
     def setMode(self):
         data = self.getConfig()
 
         # 固定時間モードに設定するため、CTRL_MODEビットをクリア
         data &= ~S11059.ctrl_mode  # CTRL_MODEビットを0に設定
         S11059.bus.write_byte_data(self.address, S11059.sensor_control, data)
-
-    ## Start measurement
+    
     def start(self):
         data = self.getConfig()
         data &= 0x3F  # RESET off, SLEEP off
         S11059.bus.write_byte_data(self.address, S11059.sensor_control, data)
 
-    ## Stop measurement
     def sleep(self):
         data = self.getConfig()
         data |= S11059.ctrl_sleep
         S11059.bus.write_byte_data(self.address, S11059.sensor_control, data)
 
-    ## Get Config
     def getConfig(self):
         control_data = S11059.bus.read_byte_data(self.address, S11059.sensor_control)
         return control_data
 
-    ## Read Measurement data
     def read(self):
         # 遅延処理
         if self.itime == 0x0:  # 0x0: delay 88usec
@@ -117,6 +107,5 @@ class S11059:
         color_blue = (data_blue_H << 8) | data_blue_L
         b = min(max(int(color_blue / 256), 0), 255)
 
-        # RGB値をリストとして返す
         color = [r, g, b]
         return color
