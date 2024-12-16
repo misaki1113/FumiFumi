@@ -75,7 +75,7 @@ class CarPosition:
             # ステッピングモータを動かす
             for _ in range(self.distance_move):
                 GPIO.output(self.steppingStep_gpio, GPIO.HIGH)
-                time.sleep(0.001)  # STEP信号の間隔
+                time.sleep(0.001) 
                 GPIO.output(self.steppingStep_gpio, GPIO.LOW)
                 time.sleep(0.001)
 
