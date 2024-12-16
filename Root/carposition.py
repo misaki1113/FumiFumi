@@ -3,7 +3,7 @@ import time
 
 class CarPosition:
     
-    distance_move = 85  # 可動機の移動ステップ数
+    distance_move = 85  # ステップ数
 
     def __init__(self):
         self.leftbtn_gpio = 6   # 左操作盤
