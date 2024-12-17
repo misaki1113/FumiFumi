@@ -37,31 +37,38 @@ class S11059:
             data |= ctrl_gain
         else:
             data &= ~(ctrl_gain)
-        bus.write_byte_data(self.address, sensor_control, control_data)
+        bus.write_byte_data(self.address, sensor_control, data)
 
     def setTime(self, itime):
         self.itime = itime
         data = self.getConfig()
         data &= 0xFC  # 最下位の2ビットをゼロにする
         data |= itime  # 測定時間を設定
-        bus.write_byte_data(self.address, sensor_control, control_data)
+        bus.write_byte_data(self.address, sensor_control, data)
 
     def setMode(self):
         data = self.getConfig()
 
         # 固定時間モードに設定するため、CTRL_MODEビットをクリア
         data &= ~ctrl_mode  # CTRL_MODEビットを0に設定
-        bus.write_byte_data(self.address, sensor_control, control_data)
+        bus.write_byte_data(self.address, sensor_control, data)
 
     def start(self):
         data = self.getConfig()
+        data |= ctrl_reset  # RESETビットをオン
+        bus.write_byte_data(self.address, sensor_control, data)
+        time.sleep(0.001) 
+
+        data &= ~ctrl_reset  # RESETビットをオフ
+        bus.write_byte_data(self.address, sensor_control, data)
+
         data &= 0x3F  # RESET off, SLEEP off
-        bus.write_byte_data(self.address, sensor_control, control_data)
+        bus.write_byte_data(self.address, sensor_control, data)
 
     def sleep(self):
         data = self.getConfig()
         data |= ctrl_sleep
-        bus.write_byte_data(self.address, sensor_control, control_data)
+        bus.write_byte_data(self.address, sensor_control, data)
 
     def getConfig(self):
         control_data = bus.read_byte_data(self.address, sensor_control)
