@@ -93,7 +93,7 @@ class ColorSensor:
             time.sleep(0.001)  # wait buffer
 
         # カラーセンサデータの取得
-        sensor_data = bus.read_i2c_block_data(self.address, data_red_H, 8)
+        sensor_data = bus.read_i2c_block_data(self.address, data_red_H, 6)
 
         # 赤色データの取得とスケーリング
         data_red_H = sensor_data[0]
