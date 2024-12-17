@@ -22,7 +22,7 @@ ctrl_time = 0x1  # 0x0:87,5μs,0x1:1.4ms,0x2:22.4ms,0x3:179.2ms
 
 bus = smbus.SMBus(1)
 
-class S11059:
+class Color:
 
     def __init__(self):
         self.address = slave_address
