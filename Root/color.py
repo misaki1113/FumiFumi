@@ -18,7 +18,7 @@ ctrl_sleep = 0x40
 ctrl_gain = 0x08
 ctrl_mode = 0x04
 
-ctrl_time = 0x1  # 0x0:87,5μs,0x1:1.4ms,0x2:22.4ms,0x3:179.2ms
+ctrl_time = 0x1  # 0x0:87,5µs,0x1:1.4ms,0x2:22.4ms,0x3:179.2ms
 
 bus = smbus.SMBus(1)
 
@@ -32,43 +32,43 @@ class ColorSensor:
         self.start()
 
     def setGain(self, gain):
-        data = self.getConfig()
+        control_data = self.getConfig()
         if gain == 1:  # 1:GAIN_HIGH, 0:GAIN_LOW
-            data |= ctrl_gain
+            control_data |= ctrl_gain
         else:
-            data &= ~(ctrl_gain)
-        bus.write_byte_data(self.address, sensor_control, data)
+            control_data &= ~(ctrl_gain)
+        bus.write_byte_data(self.address, sensor_control, control_data)
 
     def setTime(self, itime):
         self.itime = itime
-        data = self.getConfig()
-        data &= 0xFC  # 最下位の2ビットをゼロにする
-        data |= itime  # 測定時間を設定
-        bus.write_byte_data(self.address, sensor_control, data)
+        control_data = self.getConfig()
+        control_data &= 0xFC  # 最下位の2ビットをゼロにする
+        control_data |= itime  # 測定時間を設定
+        bus.write_byte_data(self.address, sensor_control, control_data)
 
     def setMode(self):
-        data = self.getConfig()
+        control_data = self.getConfig()
 
         # 固定時間モードに設定するため、CTRL_MODEビットをクリア
-        data &= ~ctrl_mode  # CTRL_MODEビットを0に設定
-        bus.write_byte_data(self.address, sensor_control, data)
+        control_data &= ~ctrl_mode  # CTRL_MODEビットを0に設定
+        bus.write_byte_data(self.address, sensor_control, control_data)
 
     def start(self):
-        data = self.getConfig()
-        data |= ctrl_reset  # RESETビットをオン
-        bus.write_byte_data(self.address, sensor_control, data)
+        control_data = self.getConfig()
+        control_data |= ctrl_reset  # RESETビットをオン
+        bus.write_byte_data(self.address, sensor_control, control_data)
         time.sleep(0.001) 
 
-        data &= ~ctrl_reset  # RESETビットをオフ
-        bus.write_byte_data(self.address, sensor_control, data)
+        control_data &= ~ctrl_reset  # RESETビットをオフ
+        bus.write_byte_data(self.address, sensor_control, control_data)
 
-        data &= 0x3F  # RESET off, SLEEP off
-        bus.write_byte_data(self.address, sensor_control, data)
+        control_data &= 0x3F  # RESET off, SLEEP off
+        bus.write_byte_data(self.address, sensor_control, control_data)
 
     def sleep(self):
-        data = self.getConfig()
-        data |= ctrl_sleep
-        bus.write_byte_data(self.address, sensor_control, data)
+        control_data = self.getConfig()
+        control_data |= ctrl_sleep
+        bus.write_byte_data(self.address, sensor_control, control_data)
 
     def getConfig(self):
         control_data = bus.read_byte_data(self.address, sensor_control)
