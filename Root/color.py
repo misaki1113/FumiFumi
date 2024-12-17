@@ -96,21 +96,15 @@ class ColorSensor:
         sensor_data = bus.read_i2c_block_data(self.address, data_red_H, 6)
 
         # 赤色データの取得とスケーリング
-        data_red_H = sensor_data[0]
-        data_red_L = sensor_data[1]
-        color_red = (data_red_H << 8) | data_red_L
+        color_red = (sensor_data[0] << 8) | sensor_data[1]
         r = min(max(int(color_red / 256), 0), 255)
 
         # 緑色データの取得とスケーリング
-        data_green_H = sensor_data[2]
-        data_green_L = sensor_data[3]
-        color_green = (data_green_H << 8) | data_green_L
+        color_green = (sensor_data[2] << 8) | sensor_data[3]
         g = min(max(int(color_green / 256), 0), 255)
 
         # 青色データの取得とスケーリング
-        data_blue_H = sensor_data[4]
-        data_blue_L = sensor_data[5]
-        color_blue = (data_blue_H << 8) | data_blue_L
+        color_blue = (sensor_data[4] << 8) | sensor_data[5]
         b = min(max(int(color_blue / 256), 0), 255)
 
         color = [r, g, b]
