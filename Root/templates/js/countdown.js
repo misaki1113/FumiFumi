@@ -14,7 +14,7 @@ onload = function(){
                 msg.textContent = "Start";
                
                 setTimeout(function() {
-                    window.location.href = "score.html";
+                    window.location.href = "/score";
                 }, 1000); 
 
             }else{

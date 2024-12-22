@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_from_directory
 from flask_socketio import SocketIO, emit
 
 import threading
@@ -19,6 +19,15 @@ class App:
 
     def setup_routes(self):
         app = self.app
+
+        @app.route('/css/<path:filename>')
+        def serve_css(filename):
+            return send_from_directory('templates/css', filename)
+        
+        # templates/js内のJSファイルを提供するルート
+        @app.route('/js/<path:filename>')
+        def serve_js(filename):
+            return send_from_directory('templates/js', filename)
 
         @app.route('/')
         def home():
@@ -69,7 +78,7 @@ class App:
     
     def background_task(self):
         # サーバー起動と並行して動作するバックグラウンドタスク
-        pages = ["home", "countdown", "score", "bonus", "gameover"]
+        pages = ["home", "countdown", "bonus", "gameover"]
         while True:
             for page in pages:
                 self.change_page(page)
