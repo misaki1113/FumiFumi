@@ -1,46 +1,48 @@
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="./css/score.css" />
-    <title>ふみふみあくせる</title>
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Kiwi+Maru&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">  </head> -->
-  <body>
-    <div class="whole">
-        <div class="title">Your Score</div>
-        <div class="score">19482</div>
-        <div class="score_layout">
-            <div class="rank_layout">
-                <span class="subtitle">Ranking</span>
-                <div class="ranking">
-                    <div class="rank">
-                        <span style="color: #e57575;"><b>1st</b></span>
-                        <span style="color: #73a2e9"><b>2nd</b></span>
-                        <span style="color: #73e993"><b>3rd</b></span>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="./css/score.css" />
+        <title>ふみふみあくせる</title>
+        <script type="text/javascript" src='./js/score.js'></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="whole">
+            <div class="title">Your Score</div>
+            <div class="score" id="score">0</div>
+            <div class="score_layout">
+                <div class="rank_layout">
+                    <span class="subtitle">Ranking</span>
+                    <div class="ranking">
+                        <div class="rank">
+                            <span style="color: #e57575;"><b>1st</b></span>
+                            <span style="color: #73a2e9"><b>2nd</b></span>
+                            <span style="color: #73e993"><b>3rd</b></span>
+                        </div>
+                        <div class="rank">
+                            <span id="ranking_one"></span>
+                            <span id="ranking_two"></span>
+                            <span id="ranking_three"></span>
+                        </div>
                     </div>
-                    <div class="rank">
-                        <span>49183</span>
-                        <span>483</span>
-                        <span>83</span>
+                </div>
+                <div class="lv_layout">
+                    <div class="lv">
+                        <span>Your Lv.</span>
+                        <span class="red" id="level">0</span>
                     </div>
-                </div>
-            </div>
-            <div class="lv_layout">
-                <div class="lv">
-                    <span>Your Lv.</span>
-                    <span class="red">4</span>
-                </div>
-                <div class="bonus">
-                    <span>Bonus +</span>
-                    <span class="red">100</span>
-                </div>
-                <div class="next">
-                    <span>Point to the next Level</span>
-                    <span class="red">5008</span>
+                    <div class="bonus">
+                        <span>Bonus +</span>
+                        <span class="red" id="bonus">0</span>
+                    </div>
+                    <div class="next">
+                        <span>Point to the next Level</span>
+                        <span class="red" id="next_point">2000</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-  </body>
+    </body>
 </html>

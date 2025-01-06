@@ -4,9 +4,10 @@ body {
     color: #FFFFFF;
     text-align: center;
     -webkit-text-stroke: 1px #000000;
-    font-weight: bold;
     align-items: center;
     justify-content: center;
+    font-family: "Roboto", serif;
+    font-weight: 500;
 }
 
 .gameover_layout {
@@ -18,17 +19,15 @@ body {
 
 .tytle {
     color:#fbfe99;
-    font-weight: bold;
     -webkit-text-stroke: 1px #000000;
-    font-size: 100px;
+    font-size: 150px;
 }
 
 .score_layout {
     display: flex;
-    font-size: 50px;
+    font-size: 100px;
 }
 
 .score {
     padding: 0px 20px;
-    font-weight: bold;
 }

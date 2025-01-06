@@ -10,13 +10,14 @@ class App:
         self.app = Flask(__name__)
         self.socketio = SocketIO(self.app)
         self.setup_routes()
-        self.data = {
+        self.state_data = {
             "score": 0,
-            "level": 1,
+            "level": 0,
             "bonus": 0,
-            "next_point": 0,
+            "next_point": 2000,
             "ranking": [0, 0, 0],
         }
+        self.bonus_data = [0, 0, 0]
 
     def setup_routes(self):
         app = self.app
