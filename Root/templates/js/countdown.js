@@ -1,6 +1,7 @@
-onload = function(){
+function countdown(initialValue) {
     //変数
-    var count = 5;
+    var count = initialValue;
+
     //要素
     var box = document.getElementById('box');
     var msg = document.getElementById('msg');
@@ -25,4 +26,9 @@ onload = function(){
     );
 
     
+}
+
+window.onload = function setup(){
+    const initialValue = 5;
+    countdown(initialValue);
 }

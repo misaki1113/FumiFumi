@@ -7,17 +7,18 @@ body {
     font-weight: bold;
     align-items: center;
     justify-content: center;
+    font-family: "Roboto", serif;
+    font-weight: 500;
 }
 
 .title {
     color:#fbfe99;
-    font-weight: bold;
     -webkit-text-stroke: 1px #000000;
-    font-size: 100px;
+    font-size: 200px;
 }
 
 .css1{
-    font-size: 150px;
+    font-size: 200px;
     color: white;
 }
 .css2{
