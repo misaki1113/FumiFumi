@@ -14,6 +14,7 @@ need_score = None
 final_score = None
 ranking = [None, None, None]
 bonus = None
+level = None
 
 class Main:
     def __init__(self) -> None:
@@ -88,7 +89,7 @@ class Main:
 
         # スコア更新
         score = self.stage_speed * self.elapsed_time
-        self.level, self.stage_speed, self.need_level = self.stage_class.changeSpeed(score)
+        level, self.stage_speed, self.need_level = self.stage_class.changeSpeed(score)
         self.next_need = next_level - score
     
     def judgeColor(self) -> None:

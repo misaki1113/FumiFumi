@@ -1,5 +1,5 @@
 async function updateDate() {
-    const response = await fetch('/score');
+    const response = await fetch('/state-data');
     const data = await response.json();
 
     const score = data.score;

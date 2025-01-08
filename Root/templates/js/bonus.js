@@ -1,5 +1,5 @@
 async function getdata() {
-    const response = await fetch('/bonus');
+    const response = await fetch('/bonus-data');
     const data = await response.json();
     return data;
 }

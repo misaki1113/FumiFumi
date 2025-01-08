@@ -1,5 +1,5 @@
 async function getdata() {
-    const response = await fetch('/game-over');
+    const response = await fetch('/final-score');
     const data = await response.json();
     return data;
 }
