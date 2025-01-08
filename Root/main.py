@@ -8,21 +8,22 @@ import time
 import RPi.GPIO as GPIO # ラスパイ用のモジュールで，windowsはインストール不可
 import concurrent.futures
 
+score = None
+next_level = None
+need_score = None
+final_score = None
+ranking = [None, None, None]
+bonus = None
+
 class Main:
     def __init__(self) -> None:
         self.stbtn_gpio = None 
         self.led_gpio = None
-        self.score = None
-        self.next_level = None
-        self.need_score = None
-        self.final_score = None
-        self.ranking = [None, None, None]
         self.isStart = None
         self.isControl = None
         self.color =[None, None, None]
         self.isBonus = None
         self.bonus_color = None
-        self.bonus = None
         self.start_time = None
         self.stage_speed = None
         self.elapsed_time = None
@@ -86,9 +87,9 @@ class Main:
         self.elapsed_time = time.time() - self.start_time
 
         # スコア更新
-        self.score = self.stage_speed * self.elapsed_time
-        self.level, self.stage_speed, self.need_level = self.stage_class.changeSpeed(self.score)
-        self.next_need = self.next_level - self.score
+        score = self.stage_speed * self.elapsed_time
+        self.level, self.stage_speed, self.need_level = self.stage_class.changeSpeed(score)
+        self.next_need = next_level - score
     
     def judgeColor(self) -> None:
         """
@@ -114,7 +115,7 @@ class Main:
                 # 光センサーが赤を検知した際の処理
                 self.isBonus = False
                 self.bonus_color = "red"
-                self.bonus = self.bonus_class.result(Bonus(self.bonus_color))
+                bonus = self.bonus_class.result(Bonus(self.bonus_color))
 
             elif(self.color == [0, 0, 255]):
                 # 光センサーが黄色を検知した際の処理
@@ -145,7 +146,7 @@ class Main:
         GPIO.output(self.led_gpio, GPIO.LOW)
 
         # 最終スコアを計算
-        self.final_score = self.score + self.bonus
+        final_score = score + self.bonus
 
         # ゲーム終了画面を表示させる処理
         self.app_class.change_page("gameover")
@@ -156,10 +157,10 @@ class Main:
         self.color_class.sleepColor()
         self.carposition_class.resetPosition()
         self.stage_class.stopStage()
-        self.score = 0
-        self.bonus = 0
-        self.next_level = 0
-        self.need_score = 0
+        score = 0
+        bonus = 0
+        next_level = 0
+        need_score = 0
         self.stage = 0
 
         # ランキングの更新
@@ -174,7 +175,7 @@ class Main:
         ランキングを更新する関数(完成)
         """
         # ランキングの更新
-        new_score = self.score + [final_score] # スコア追記
+        new_score = score + [final_score] # スコア追記
         new_score = sorted(new_score, reverse=True) # 降順にソート
         new_score.pop(-1) # 末尾のスコアを削除
-        self.score = new_score # ランキングスコア更新
+        score = new_score # ランキングスコア更新
