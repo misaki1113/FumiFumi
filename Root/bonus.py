@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import random
 
-result_bonus = 0
+result_bonus = [0, 0, 0]
 
 class Bonus:
 

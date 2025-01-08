@@ -1,5 +1,7 @@
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from flask_socketio import SocketIO, emit
+import main
+import bonus
 
 # import threading
 import time
@@ -16,8 +18,11 @@ class App:
             "bonus": 0,
             "next_point": 2000,
             "ranking": [0, 0, 0],
+            "final_score": 0,
         }
-        self.bonus_data = [0, 0, 0]
+        self.bonus_data = {
+            "result_bonus": [0, 0, 0],
+        }
 
     def setup_routes(self):
         app = self.app
@@ -47,19 +52,33 @@ class App:
         def score():
             return render_template('score.html')
 
-        @app.route('/bonus')
-        def bonus():
+        @app.route('/bonus_page')
+        def bonus_page():
             return render_template('bonus.html')
 
         @app.route('/gameover')
         def gameover():
             return render_template('gameover.html')
         
-        @app.route('/api/data', methods=['GET'])
+        @app.route("/state-data", method=["GET"])
         def get_data():
-            self.data["score"] += 3.5
-            return jsonify(self.data)
+            self.state_data["score"] = main.score
+            self.state_data["level"] = main.level
+            self.state_data["result_bonus"] += main.bonus
+            self.state_data["next_point"] = main.need_score
+            self.state_data["ranking"] = main.ranking
+            return jsonify(self.state_data)
         
+        @app.route("/bonus-data", methods=["GET"])
+        def get_data():
+            self.bonus_data["result_bonus"] = bonus.result_bonus
+            return jsonify(self.bonus_data)
+        
+        @app.route("/final-score", methods=["GET"])
+        def get_data():
+            self.state_data["final_score"] = main.final_score
+            return jsonify(self.state_data)
+
         @self.socketio.on("connect")
         def on_connect():
             print("client connected")
@@ -73,7 +92,7 @@ class App:
             "home": "/",
             "countdown":"/countdown",
             "score":"/score",
-            "bonus":"/bonus",
+            "bonus_page":"/bonus_page",
             "gameover":"/gameover"
         }
 
@@ -97,8 +116,10 @@ class App:
         # threading.Thread(target=self.background_task, daemon=True).start()
         self.socketio.run(self.app, host="0.0.0.0" , port=5000, debug=True)
 
+    def reset(self):
+        self.state_data = 0
+        self.bonus_data = 0
+
 # Initialize and run the app
 if __name__ == '__main__':
     app_instance = App()
-
-   
