@@ -1,7 +1,7 @@
 from bonus import Bonus
-from carposition import Carposition
-from color import Color
-from stage import Stage
+from carposition import CarPosition
+from color import ColorSensor
+from stage import stage
 from app import App
 
 import time
@@ -15,12 +15,14 @@ final_score = None
 ranking = [None, None, None]
 bonus = None
 
+isStart = None
+isControl = None
+
+
 class Main:
     def __init__(self) -> None:
-        self.stbtn_gpio = None 
-        self.led_gpio = None
-        self.isStart = None
-        self.isControl = None
+        self.stbtn_gpio = 29 
+        self.led_gpio = 15
         self.color =[None, None, None]
         self.isBonus = None
         self.bonus_color = None
@@ -29,50 +31,52 @@ class Main:
         self.elapsed_time = None
 
         # クラスの呼び出し
-        self.stage_class = Stage()
+        self.stage_class = stage()
         self.bonus_class = Bonus()
-        self.carposition_class = Carposition()
-        self.color_class = Color()
+        self.carposition_class = CarPosition()
+        self.color_class = ColorSensor()
         self.app_class = App()
 
 
     def Main(self):
         """
-        メイン処理(未完成)
+        メイン処理(完成)
         """
-        # if(self.isStart == True):
-        #     self.start()
+        while True:
+            if(isStart == True):
+                self.start()
 
-        if(self.isControl == True):
-            while True:
+            if(isControl == True):
                 # score, judgeColor, carposition.controlメゾットの3並列処理            
                 with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
                     executor.submit(self.Score())
                     executor.submit(self.judgeColor())
                     executor.submit(self.carposition_class.control())
 
-                    if(self.isControl == False):
-                        break
-
 
     def start(self) -> None:
         """
-        ゲームを開始する関数（未完成）
+        ゲームを開始する関数（完成）
         """
         # スタート画面を表示させる処理
         self.app_class.change_page("home")
 
         # スタートボタンが押されたら開始
-        if(self.isStart == True):
+        if(isStart == True):
             #スタートボタンが押された際の時間(int型)を格納
             self.start_time = time.time() 
-            self.isStart = False
+            isStart = False
 
             # カウント画面を表示させる処理
             self.app_class.change_page("countdown")
 
-            # 5秒待機
-            time.sleep(5) 
+            # 8秒待機
+            time.sleep(8) 
+
+            #コントロール可
+            isControl = True
+
+            self.app_class.change_page("score")
 
             # 白色LEDを点灯させる処理
             GPIO.setmode(GPIO.BCM)
@@ -95,7 +99,7 @@ class Main:
         """
         光センサーから読み取ったRGB値によって処理する関数（完成）
         """
-        self.color = self.color.readColor()
+        self.color = self.color_class.readColor()
         
         if(self.color == [0, 0, 0] or self.color == [128, 128, 128]):
             # ゲーム終了処理
@@ -121,24 +125,29 @@ class Main:
                 # 光センサーが黄色を検知した際の処理
                 self.isBonus = False
                 self.bonus_color = "yellow"
-                self.bonus = self.bonus_class.resultBonus(self.bonus_color)
+                bonus = self.bonus_class.resultBonus(self.bonus_color)
 
             elif(self.color == [255, 255, 255]):
                 # 光センサーが白を検知した際の処理
                 self.isBonus = False
                 self.bonus_color = "white"
-                self.bonus = self.bonus_class.resultBonus(self.bonus_color)
+                bonus = self.bonus_class.resultBonus(self.bonus_color)
 
             elif(self.color == [0, 0, 0] or self.color == [128, 128, 128]):
                 # 光センサーが黒，または白を検知した際の処理
                 self.isBonus = False
                 self.gameOver()
+        
+        elif(self.isBonus == False):
+            # スコア・ランキング画面を表示
+            self.app_class.change_page("score")
     
     def gameOver(self) -> None:
         """
         ゲームオーバー時の処理（完成かも）
         """
-        self.isControl = False
+        isControl = False
+        self.isBonus = False
         
         # 白色LEDを消灯する（少し怪しい）
         GPIO.setmode(GPIO.BCM)
@@ -146,12 +155,10 @@ class Main:
         GPIO.output(self.led_gpio, GPIO.LOW)
 
         # 最終スコアを計算
-        final_score = score + self.bonus
+        final_score = score + bonus
 
         # ゲーム終了画面を表示させる処理
         self.app_class.change_page("gameover")
-
-        self.isStart = False
 
         # 初期化
         self.color_class.sleepColor()
@@ -166,6 +173,8 @@ class Main:
         # ランキングの更新
         self.sortRank()
         time.sleep(5)
+
+        isStart = True
 
         # スタート画面を表示させる処理
         self.app_class.change_page("home")
