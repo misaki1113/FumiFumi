@@ -8,28 +8,30 @@ import time
 import RPi.GPIO as GPIO # ラスパイ用のモジュールで，windowsはインストール不可
 import concurrent.futures
 
-score = None
-next_level = None
-need_score = None
-final_score = None
-ranking = [None, None, None]
-bonus = None
-level = None
+import threading
 
-isStart = None
-isControl = None
+score = 0
+next_level = 0
+need_score = 0
+final_score = 0
+ranking = [0, 0, 0]
+bonus = 0
+level = 0
+
+isStart = True
+isControl = False
 
 
 class Main:
     def __init__(self) -> None:
         self.stbtn_gpio = 29 
         self.led_gpio = 15
-        self.color =[None, None, None]
-        self.isBonus = None
+        self.color =[0, 0, 0]
+        self.isBonus = False
         self.bonus_color = None
-        self.start_time = None
-        self.stage_speed = None
-        self.elapsed_time = None
+        self.start_time = 0
+        self.stage_speed = 0
+        self.elapsed_time = 0
 
         # クラスの呼び出し
         self.stage_class = stage()
@@ -38,11 +40,19 @@ class Main:
         self.color_class = ColorSensor()
         self.app_class = App()
 
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.stbtn_gpio, GPIO.IN)
+
+        background_thread = threading.Thread(target=self.background_task, daemon=True)
+        background_thread.start()
+        self.Main()
 
     def Main(self):
         """
         メイン処理(完成)
         """
+        global isStart, isControl
+
         while True:
             if(isStart == True):
                 self.start()
@@ -54,16 +64,19 @@ class Main:
                     executor.submit(self.judgeColor())
                     executor.submit(self.carposition_class.control())
 
+    def background_task(self):
+        self.app_class.run()
 
     def start(self) -> None:
         """
         ゲームを開始する関数（完成）
         """
+        global isStart, isControl
         # スタート画面を表示させる処理
         self.app_class.change_page("home")
 
         # スタートボタンが押されたら開始
-        if(isStart == True):
+        if GPIO.input(self.stbtn_gpio) == GPIO.HIGH:
             #スタートボタンが押された際の時間(int型)を格納
             self.start_time = time.time() 
             isStart = False
@@ -88,6 +101,8 @@ class Main:
         """
         スコアを更新する関数（完成）
         """
+        global score, next_level, level
+
         # 経過時間
         self.elapsed_time = time.time() - self.start_time
 
@@ -100,6 +115,8 @@ class Main:
         """
         光センサーから読み取ったRGB値によって処理する関数（完成）
         """
+        global bonus
+
         self.color = self.color_class.readColor()
         
         if(self.color == [0, 0, 0] or self.color == [128, 128, 128]):
@@ -147,6 +164,7 @@ class Main:
         """
         ゲームオーバー時の処理（完成かも）
         """
+        global isControl, isStart, score, bonus, next_level, final_score, need_score
         isControl = False
         self.isBonus = False
         
@@ -184,8 +202,15 @@ class Main:
         """
         ランキングを更新する関数(完成)
         """
+        global score, ranking
         # ランキングの更新
-        new_score = score + [final_score] # スコア追記
-        new_score = sorted(new_score, reverse=True) # 降順にソート
-        new_score.pop(-1) # 末尾のスコアを削除
-        score = new_score # ランキングスコア更新
+        # new_score = score + [final_score] # スコア追記
+        # new_score = sorted(new_score, reverse=True) # 降順にソート
+        # new_score.pop(-1) # 末尾のスコアを削除
+        # score = new_score # ランキングスコア更新
+
+        ranking.append(final_score)
+        ranking = sorted(ranking, reverse=True)[:3]
+
+if __name__ == '__main__':
+    main = Main()

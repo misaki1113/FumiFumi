@@ -26,6 +26,8 @@ body {
 .score_layout {
     display: flex;
     font-size: 100px;
+    align-items: center;
+    flex-direction: row;
 }
 
 .score {

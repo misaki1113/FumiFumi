@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from flask_socketio import SocketIO, emit
-import main
-import bonus
+# import main
+# import bonus
 
 # import threading
 import time
@@ -62,21 +62,21 @@ class App:
         
         @app.route("/state-data", method=["GET"])
         def get_data():
-            self.state_data["score"] = main.score
-            self.state_data["level"] = main.level
-            self.state_data["result_bonus"] += main.bonus
-            self.state_data["next_point"] = main.need_score
-            self.state_data["ranking"] = main.ranking
+            # self.state_data["score"] = main.score
+            # self.state_data["level"] = main.level
+            # self.state_data["result_bonus"] += main.bonus
+            # self.state_data["next_point"] = main.need_score
+            # self.state_data["ranking"] = main.ranking
             return jsonify(self.state_data)
         
         @app.route("/bonus-data", methods=["GET"])
         def get_data():
-            self.bonus_data["result_bonus"] = bonus.result_bonus
+            # self.bonus_data["result_bonus"] = bonus.result_bonus
             return jsonify(self.bonus_data)
         
         @app.route("/final-score", methods=["GET"])
         def get_data():
-            self.state_data["final_score"] = main.final_score
+            # self.state_data["final_score"] = main.final_score
             return jsonify(self.state_data)
 
         @self.socketio.on("connect")
@@ -114,7 +114,7 @@ class App:
     
     def run(self):
         # threading.Thread(target=self.background_task, daemon=True).start()
-        self.socketio.run(self.app, host="0.0.0.0" , port=5000, debug=True)
+        self.socketio.run(self.app, host="0.0.0.0" , port=5000, debug=False)
 
     def reset(self):
         self.state_data = 0
@@ -123,3 +123,4 @@ class App:
 # Initialize and run the app
 if __name__ == '__main__':
     app_instance = App()
+    app_instance.run()
